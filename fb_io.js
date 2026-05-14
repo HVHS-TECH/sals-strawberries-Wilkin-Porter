@@ -7,35 +7,30 @@
  **************************************************************
  **************************************************************/
 
-let authenticationListener;
-let loggingOut = false;
+//var loginLogoutButton = document.getElementById("loginLogout");
+
+var fb_GLOBAL_user;
+var authenticationListener;
 
 function fb_authenticate() {
     authenticationListener = firebase.auth().onAuthStateChanged(fb_checkLoginState)
 }
 
 function fb_checkLoginState(_userInformation) {
-    if (loggingOut = true) {
-        // do nothing man
-        return;
-    }
-
     if (_userInformation) {
-        // User is logged in, replace login with logout button
+        console.log(_userInformation);
+        firebase.database().ref('/salsStrawberries').update({
+            userData: {
+                [_userInformation['l']]: {
+                    userName: _userInformation['displayName'],
+                    email: _userInformation['email'],
+                    //profileURL: user['photoURL']
+                }
+            }
+        });
     } else {
-        loggedOut = false;
         fb_loginPopup();
     }
-
-    firebase.database().ref('/salsStrawberries').update({
-        userData: {
-            [_userInformation['l']]: {
-                userName: _userInformation['displayName'],
-                email: _userInformation['email'],
-                //profileURL: user['photoURL']
-            }
-        }
-    });
 }
 
 function fb_loginPopup() {
@@ -44,6 +39,12 @@ function fb_loginPopup() {
 	firebase.auth().signInWithPopup(provider).then((result) => {
 		fb_GLOBAL_user = result.user;
 	});
+}
+
+function fb_logout() {
+    authenticationListener(); // Next steps: understand what this is even doing
+    firebase.auth().signOut();
+    console.log('testing')
 }
 
 function fb_error(){

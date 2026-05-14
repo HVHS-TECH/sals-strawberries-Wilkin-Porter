@@ -22,5 +22,5 @@ firebase.initializeApp(firebaseConfig);
 
 // This log prints the firebase object to the console to show that it is working.
 // As soon as you have the script working, delete this log.
-console.log("Firebase initialize finished:");
-console.log(firebase);
+//console.log("Firebase initialize finished:");
+//console.log(firebase);
