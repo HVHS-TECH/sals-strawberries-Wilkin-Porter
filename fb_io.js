@@ -18,7 +18,6 @@ function fb_authenticate() {
 
 function fb_checkLoginState(_userInformation) {
     if (_userInformation) {
-        console.log(_userInformation);
         firebase.database().ref('/salsStrawberries').update({
             userData: {
                 [_userInformation['l']]: {
@@ -31,6 +30,7 @@ function fb_checkLoginState(_userInformation) {
     } else {
         fb_loginPopup();
     }
+    console.log(_userInformation);
 }
 
 function fb_loginPopup() {
@@ -42,9 +42,9 @@ function fb_loginPopup() {
 }
 
 function fb_logout() {
-    authenticationListener(); // Next steps: understand what this is even doing
+    authenticationListener; // Next steps: understand what this is even doing
     firebase.auth().signOut();
-    console.log('testing')
+    console.log('testing');
 }
 
 function fb_error(){
