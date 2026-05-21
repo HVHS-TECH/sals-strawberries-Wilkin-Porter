@@ -7,9 +7,9 @@
  **************************************************************
  **************************************************************/
 
-//var loginLogoutButton = document.getElementById("loginLogout");
-
-var fb_GLOBAL_user;
+const LOGIN_TEXT = document.getElementById("loginInformation");
+var logout;
+var fb_userInformation;
 var authenticationListener;
 
 function fb_authenticate() {
@@ -17,6 +17,9 @@ function fb_authenticate() {
 }
 
 function fb_checkLoginState(_userInformation) {
+    if (logout == true) {
+        return;
+    }
     if (_userInformation) {
         firebase.database().ref('/salsStrawberries').update({
             userData: {
@@ -27,24 +30,24 @@ function fb_checkLoginState(_userInformation) {
                 }
             }
         });
+        fb_userInformation = _userInformation;
+        displayLoginInformation();
     } else {
         fb_loginPopup();
     }
-    console.log(_userInformation);
+    
 }
 
 function fb_loginPopup() {
 	let provider = new firebase.auth.GoogleAuthProvider();
 
-	firebase.auth().signInWithPopup(provider).then((result) => {
-		fb_GLOBAL_user = result.user;
-	});
+	firebase.auth().signInWithPopup(provider);
 }
 
 function fb_logout() {
-    authenticationListener; // Next steps: understand what this is even doing
+    logout = true;
+    // WORKING ON LOGOUT ************************************************************************************************************************ < here
     firebase.auth().signOut();
-    console.log('testing');
 }
 
 function fb_error(){
