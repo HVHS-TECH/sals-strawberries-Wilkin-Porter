@@ -58,3 +58,15 @@ button:hover {
 	margin-top: 1rem;
 	font-style: italic;
 }
+
+.nameError {
+	color: red;
+}
+
+.fruitError {
+	color: red;
+}
+
+.quantityError {
+	color: red;
+}

@@ -3,6 +3,11 @@
 
 const LOGIN_INFORMATION = document.getElementById("loginInformation");
 
+const NAME_ERROR = document.getElementById("nameError");
+const FRUIT_ERROR = document.getElementById("fruitError");
+const QUANTITY_ERROR = document.getElementById("quantityError");
+
+
 console.log("Running Sal's Strawberries");
 
 function writeForm() {
@@ -11,7 +16,17 @@ function writeForm() {
     const FORM_INPUT_FRUIT = document.getElementById("favoriteFruit").value;
     const FORM_INPUT_QUANTITY = document.getElementById("fruitQuantity").value;
     
-    
+    if (Number(FORM_INPUT_NAME) == !NaN) {
+        NAME_ERROR.textContent = "Please Input Text";
+    }
+
+    if (Number(FORM_INPUT_FRUIT) == !NaN) {
+        FRUIT_ERROR = "Please Input Text";
+    }
+
+    if (Number(FORM_INPUT_QUANTITY) == NaN) {
+        FRUIT_ERROR = "Please Input A Number";
+    }
 }
 
 function displayLoginInformation() {
