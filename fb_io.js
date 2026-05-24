@@ -22,7 +22,7 @@ function fb_checkLoginState(_userInformation) {
     }
     if (_userInformation) {
         firebase.database().ref('/salsStrawberries/userData').update({
-            [_userInformation['l']]: {
+            [_userInformation['uid']]: {
                 userName: _userInformation['displayName'],
                 email: _userInformation['email'],
                 //profileURL: user['photoURL']
