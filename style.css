@@ -40,7 +40,8 @@ input {
 }
 
 button {
-	margin-top: 1.5rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 	padding: 0.7rem 1.2rem;
 	background-color: rgb(37, 158, 128);
 	color: white;

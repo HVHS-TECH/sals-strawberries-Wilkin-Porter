@@ -21,13 +21,11 @@ function fb_checkLoginState(_userInformation) {
         return;
     }
     if (_userInformation) {
-        firebase.database().ref('/salsStrawberries').update({
-            userData: {
-                [_userInformation['l']]: {
-                    userName: _userInformation['displayName'],
-                    email: _userInformation['email'],
-                    //profileURL: user['photoURL']
-                }
+        firebase.database().ref('/salsStrawberries/userData').update({
+            [_userInformation['l']]: {
+                userName: _userInformation['displayName'],
+                email: _userInformation['email'],
+                //profileURL: user['photoURL']
             }
         });
         fb_userInformation = _userInformation;
@@ -40,14 +38,13 @@ function fb_checkLoginState(_userInformation) {
 
 function fb_loginPopup() {
 	let provider = new firebase.auth.GoogleAuthProvider();
-
 	firebase.auth().signInWithPopup(provider);
 }
 
 function fb_logout() {
     logout = true;
-    // WORKING ON LOGOUT ************************************************************************************************************************ < here
     firebase.auth().signOut();
+    removeLoginInformation();
 }
 
 function fb_error(){

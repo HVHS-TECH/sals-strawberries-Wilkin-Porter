@@ -22,7 +22,8 @@
 
 		<button onclick="fb_authenticate()">Login with Google</button>
 		<button onclick="fb_logout()">Logout</button>
-		<p id="loginInformation"></p>
+		<h2>Login Status:</h2>
+		<p id="loginInformation">Not Logged In</p>
 
 		<form id="fruitForm">
 			<label for="name">Your Name:</label>
@@ -37,7 +38,7 @@
 			<!-- add more fields here -->
 		</form>
 
-		<button onclick="fb_write()">Submit</button>
+		<button onclick="writeForm()">Submit</button>
 
 		<p id="statusMessage"></p>
 	</div>
