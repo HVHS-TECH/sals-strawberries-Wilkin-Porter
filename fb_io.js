@@ -7,12 +7,12 @@
  **************************************************************
  **************************************************************/
 
-const LOGIN_TEXT = document.getElementById("loginInformation");
-var logout;
-var fb_userInformation;
-var authenticationListener;
+let logout;
+let fb_userInformation;
+let authenticationListener;
 
 function fb_authenticate() {
+    logout = false;
     authenticationListener = firebase.auth().onAuthStateChanged(fb_checkLoginState)
 }
 
@@ -25,15 +25,15 @@ function fb_checkLoginState(_userInformation) {
             [_userInformation['uid']]: {
                 userName: _userInformation['displayName'],
                 email: _userInformation['email'],
-                //profileURL: user['photoURL']
+                profileURL: _userInformation['photoURL']
             }
         });
         fb_userInformation = _userInformation;
         displayLoginInformation();
+        loginButtonDisplay('hide');
     } else {
         fb_loginPopup();
     }
-    
 }
 
 function fb_loginPopup() {
@@ -43,6 +43,7 @@ function fb_loginPopup() {
 
 function fb_logout() {
     logout = true;
+    loginButtonDisplay('show');
     firebase.auth().signOut();
     removeLoginInformation();
 }

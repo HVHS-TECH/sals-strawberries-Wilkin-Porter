@@ -1,11 +1,12 @@
-
-
-
 const LOGIN_INFORMATION = document.getElementById("loginInformation");
+const LOGIN_BUTTON = document.getElementById("loginButton");
+const LOGOUT_BUTTON = document.getElementById("logoutButton");
+loginButtonDisplay('show');
 
 const NAME_ERROR = document.getElementById("nameError");
 const FRUIT_ERROR = document.getElementById("fruitError");
 const QUANTITY_ERROR = document.getElementById("quantityError");
+const LOGIN_ERROR = document.getElementById("loginError");
 
 
 console.log("Running Sal's Strawberries");
@@ -16,16 +17,52 @@ function writeForm() {
     const FORM_INPUT_FRUIT = document.getElementById("favoriteFruit").value;
     const FORM_INPUT_QUANTITY = document.getElementById("fruitQuantity").value;
     
-    if (Number(FORM_INPUT_NAME) == !NaN) {
+    console.log(Number(FORM_INPUT_NAME))
+    if (Number(FORM_INPUT_NAME) == NaN) {
+        NAME_ERROR.textContent = "";
+    } else {
         NAME_ERROR.textContent = "Please Input Text";
-    }
+        return;
+    } //************************************************************************************************ working here */
 
-    if (Number(FORM_INPUT_FRUIT) == !NaN) {
-        FRUIT_ERROR = "Please Input Text";
+    if (Number(FORM_INPUT_FRUIT) != NaN) {
+        FRUIT_ERROR.textContent = "Please Input Text";
+        return;
+    } else {
+        FRUIT_ERROR.textContent = "";
     }
 
     if (Number(FORM_INPUT_QUANTITY) == NaN) {
-        FRUIT_ERROR = "Please Input A Number";
+        QUANTITY_ERROR.textContent = "Please Input A Number";
+        return;
+    } else {
+        QUANTITY_ERROR.textContent = "";
+    }
+
+    if (Number(FORM_INPUT_QUANTITY) <= 0) {
+        QUANTITY_ERROR.textContent = "Please Input A Number Greater than 0";
+        return;
+    } else {
+        QUANTITY_ERROR.textContent = "";
+    }
+
+    if (Number(FORM_INPUT_QUANTITY) > 1000) {
+        QUANTITY_ERROR.textContent = "Please Input A Number Less than 1000";
+        return;
+    } else {
+        QUANTITY_ERROR.textContent = "";
+    }
+
+    if (fb_userInformation) {
+        firebase.database().ref('/salsStrawberries/userData').update({
+            [fb_userInformation['uid']]: {
+                preferredName: FORM_INPUT_NAME,
+                favouriteFruit: FORM_INPUT_FRUIT,
+                fruitQuantity: FORM_INPUT_QUANTITY,
+            }
+        });
+    } else {
+        LOGIN_ERROR.textContent = "You are not logged in, cannot save info to database.";
     }
 }
 
@@ -45,4 +82,20 @@ function displayLoginInformation() {
 function removeLoginInformation() {
     console.log('User Logged Out');
     LOGIN_INFORMATION.innerHTML = 'Not Logged In';
+}
+
+function loginButtonDisplay(mode) {
+    if (mode == 'hide') {
+        LOGIN_BUTTON.hidden = true;
+        LOGOUT_BUTTON.hidden = false;
+        return;
+    } 
+
+    if (mode == 'show') {
+        LOGIN_BUTTON.hidden = false;
+        LOGOUT_BUTTON.hidden = true;
+        return;
+    }
+
+    console.error("loginButtonDisplay() is being called with something other than 'show' or 'hide'");
 }
