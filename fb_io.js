@@ -21,12 +21,10 @@ function fb_checkLoginState(_userInformation) {
         return;
     }
     if (_userInformation) {
-        firebase.database().ref('/salsStrawberries/userData').update({
-            [_userInformation['uid']]: {
-                userName: _userInformation['displayName'],
-                email: _userInformation['email'],
-                profileURL: _userInformation['photoURL']
-            }
+        firebase.database().ref('/salsStrawberries/userData/' + _userInformation['uid']).update({
+            userName: _userInformation['displayName'],
+            email: _userInformation['email'],
+            profileURL: _userInformation['photoURL']
         });
         fb_userInformation = _userInformation;
         displayLoginInformation();
@@ -43,6 +41,7 @@ function fb_loginPopup() {
 
 function fb_logout() {
     logout = true;
+    fb_userInformation = null;
     loginButtonDisplay('show');
     firebase.auth().signOut();
     removeLoginInformation();

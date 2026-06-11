@@ -17,22 +17,34 @@ function writeForm() {
     const FORM_INPUT_FRUIT = document.getElementById("favoriteFruit").value;
     const FORM_INPUT_QUANTITY = document.getElementById("fruitQuantity").value;
     
-    console.log(Number(FORM_INPUT_NAME))
-    if (Number(FORM_INPUT_NAME) == NaN) {
-        NAME_ERROR.textContent = "";
+    if (fb_userInformation == undefined || fb_userInformation == null) {
+        LOGIN_ERROR.textContent = "You are not logged in, cannot save info to database.";
+        return;
     } else {
+        LOGIN_ERROR.textContent = "";
+    }
+
+    if (isNumber(FORM_INPUT_NAME)) {
         NAME_ERROR.textContent = "Please Input Text";
         return;
-    } //************************************************************************************************ working here */
+    } else if (FORM_INPUT_NAME.length > 40) {
+        NAME_ERROR.textContent = "Please Input Text Shorter than 40 Characters";
+        return;
+    } else {
+        NAME_ERROR.textContent = "";
+    }
 
-    if (Number(FORM_INPUT_FRUIT) != NaN) {
+    if (isNumber(FORM_INPUT_FRUIT)) {
         FRUIT_ERROR.textContent = "Please Input Text";
+        return;
+    } else if (FORM_INPUT_FRUIT.length > 40) {
+        FRUIT_ERROR.textContent = "Please Input Text Shorter than 40 Characters";
         return;
     } else {
         FRUIT_ERROR.textContent = "";
     }
 
-    if (Number(FORM_INPUT_QUANTITY) == NaN) {
+    if (!isNumber(FORM_INPUT_QUANTITY)) {
         QUANTITY_ERROR.textContent = "Please Input A Number";
         return;
     } else {
@@ -53,17 +65,14 @@ function writeForm() {
         QUANTITY_ERROR.textContent = "";
     }
 
-    if (fb_userInformation) {
-        firebase.database().ref('/salsStrawberries/userData').update({
-            [fb_userInformation['uid']]: {
-                preferredName: FORM_INPUT_NAME,
-                favouriteFruit: FORM_INPUT_FRUIT,
-                fruitQuantity: FORM_INPUT_QUANTITY,
-            }
-        });
-    } else {
-        LOGIN_ERROR.textContent = "You are not logged in, cannot save info to database.";
-    }
+    console.log("Form Error Checked, Results:\nPreferred Name: " + FORM_INPUT_NAME + "\nFavourite Fruit: " + FORM_INPUT_FRUIT + "\nServings Per Week: " + FORM_INPUT_QUANTITY);
+
+    firebase.database().ref('/salsStrawberries/userData/' + fb_userInformation['uid']).update({
+        preferredName: FORM_INPUT_NAME,
+        favouriteFruit: FORM_INPUT_FRUIT,
+        fruitQuantity: FORM_INPUT_QUANTITY,
+    });
+    
 }
 
 function displayLoginInformation() {
@@ -72,8 +81,8 @@ function displayLoginInformation() {
         LOGIN_INFORMATION.style.color = 'red';
 		LOGIN_INFORMATION.textContent = 'An error occured during sign in. Please try again later, or contact the site administrator if you believe this is a mistake.';
     } else {
-        console.log('Logged in as user: ' + fb_userInformation['displayName'] + '. Full user details:');
-        console.log(fb_userInformation);
+        console.log('Logged in as user: ' + fb_userInformation['displayName']);
+        LOGIN_ERROR.textContent = "";
         LOGIN_INFORMATION.style.color = '#145043';
         LOGIN_INFORMATION.textContent = 'Logged in as user: ' + fb_userInformation['displayName'];
     }
@@ -98,4 +107,12 @@ function loginButtonDisplay(mode) {
     }
 
     console.error("loginButtonDisplay() is being called with something other than 'show' or 'hide'");
+}
+
+function isNumber(_input) {
+    if (isNaN(Number(_input))) {
+        return false;
+    } else {
+        return true;
+    }
 }
